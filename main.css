@@ -1,0 +1,39 @@
+.impact-area {
+  color: red;
+}
+
+.list-section-left,
+.list-section-center,
+.list-section-right {
+  background-color: rgb(200, 200, 200);
+}
+
+.list-section-left {
+  border-top-left-radius: 10px;
+}
+.list-section-right {
+  border-top-right-radius: 10px;
+}
+
+td:first-child {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+td:last-child {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+thead td {
+  font-weight: bold;
+}
+
+.table-bordered>thead>tr>th,
+.table-bordered>tbody>tr>th,
+.table-bordered>tfoot>tr>th,
+.table-bordered>thead>tr>td,
+.table-bordered>tbody>tr>td,
+.table-bordered>tfoot>tr>td {
+  border: 1px solid white;
+}
