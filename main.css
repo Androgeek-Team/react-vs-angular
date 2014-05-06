@@ -25,10 +25,13 @@ td:last-child {
   border-bottom-right-radius: 10px;
 }
 
-thead td {
+table.table thead td {
   font-weight: bold;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
+.table-bordered,
 .table-bordered>thead>tr>th,
 .table-bordered>tbody>tr>th,
 .table-bordered>tfoot>tr>th,

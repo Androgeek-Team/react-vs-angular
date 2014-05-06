@@ -12,9 +12,9 @@ var RiskProbability = React.createClass({
   },
   getLabelClass: function(value) {
     if (value < 4) {
-      return "label-success"
+      return "label-success";
     } else if (value > 6) {
-      return "label-danger"
+      return "label-danger";
     } else {
       return "label-warning";
     }
