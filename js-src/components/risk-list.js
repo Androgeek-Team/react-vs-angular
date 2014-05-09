@@ -2,22 +2,28 @@
 /* global RiskLine */
 /* global jQuery */
 /* global EventSystem */
+/* global getHtmlParam */
+/* global setTimeout */
 
 var RiskList = React.createClass({
   getInitialState: function() {
     return { risks: [] };
   },
-  componentDidMount: function() {
+  loadRiskList: function() {
     var that = this;
     jQuery.get(
-      '/risks.json',
+      getHtmlParam("risks-endpoint"),
       function(data) {
         that.setState({
           risks: data
         });
+        setTimeout(that.loadRiskList, 1000);
       },
       'json'
     );
+  },
+  componentDidMount: function() {
+    this.loadRiskList();
   },
   render: function() {
     var rows = this.state.risks

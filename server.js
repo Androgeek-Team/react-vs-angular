@@ -35,6 +35,11 @@ var risks = [
   }
 ];
 
+var __lastRiskId = risks.length;
+var getNextRiskId = function() {
+  return ++__lastRiskId;
+}
+
 app.use('/', express.static(__dirname));
 app.use(bodyParser());
 
@@ -43,12 +48,20 @@ app.get('/risks.json', function(req, res) {
   return res.send(JSON.stringify(risks));
 });
 
-//app.post('/comments.json', function(req, res) {
-//  req.body.createdAt = new Date();
-//  comments.push(req.body);
-//  res.setHeader('Content-Type', 'application/json');
-//  res.send(JSON.stringify(comments));
-//});
+app.post('/risks.json', function(req, res) {
+  req.body.owner = { name: Users[1], id: 1 };
+  req.body.impact = parseInt(req.body.impact, 10);
+  req.body.probability = parseInt(req.body.probability, 10);
+  req.body.status = {
+    id: parseInt(req.body.status, 10),
+    name: StatusList[req.body.status]
+  };
+  req.body.areas = req.body.areas.map(function(item) { return parseInt(item, 10); });
+  req.body.id = getNextRiskId();
+  risks.push(req.body);
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({ success: true }));
+});
 
 var server = app.listen(process.env.PORT || 3000, function() {
     console.log('Listening on port %d', server.address().port);

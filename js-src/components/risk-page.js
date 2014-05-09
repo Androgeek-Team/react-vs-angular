@@ -1,6 +1,7 @@
 /* global React */
 /* global RiskList */
 /* global EventSystem */
+/* global RiskDialog */
 
 var RiskPage = React.createClass({
   updateRiskCount: function(count) {
@@ -19,7 +20,10 @@ var RiskPage = React.createClass({
   render: function() {
     return React.DOM.div({}, [
       React.DOM.button(
-        { className: "btn btn-success pull-right" },
+        {
+          className: "btn btn-success pull-right",
+          onClick: this.openNewRiskDialog
+        },
         [
           React.DOM.span({
             className: "glyphicon glyphicon-plus"
@@ -34,7 +38,8 @@ var RiskPage = React.createClass({
           React.DOM.small({}, this.riskCountText())
         ]
       ),
-      RiskList({})
+      RiskList({}),
+      RiskDialog({ref: "riskDialog"})
     ]);
   },
   riskCountText: function() {
@@ -45,5 +50,8 @@ var RiskPage = React.createClass({
       return this.state.riskCount + " risk";
     }
     return this.state.riskCount + " risks";
+  },
+  openNewRiskDialog: function() {
+    this.refs.riskDialog.open();
   }
 });
