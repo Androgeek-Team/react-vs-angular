@@ -38,7 +38,7 @@ var risks = [
 var __lastRiskId = risks.length;
 var getNextRiskId = function() {
   return ++__lastRiskId;
-}
+};
 
 app.use('/', express.static(__dirname));
 app.use(bodyParser());
