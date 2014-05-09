@@ -36,3 +36,4 @@ grunt.loadNpmTasks('grunt-contrib-jshint');
 
 grunt.registerTask('default', ['jshint', 'uglify']);
 grunt.registerTask('heroku', ['jshint', 'uglify']);
+grunt.registerTask('travis', ['jshint']);
