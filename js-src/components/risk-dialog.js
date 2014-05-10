@@ -24,7 +24,8 @@ var RiskDialog = React.createClass({
   },
   getInitialState: function() {
     return {
-      risk: this.defaultEmptyRisk()
+      risk: this.defaultEmptyRisk(),
+      error: null
     };
   },
   render: function() {
@@ -35,6 +36,7 @@ var RiskDialog = React.createClass({
       extraModalClass: "modal-lg",
       onCancel: this.handleCancel,
       onConfirm: this.handleConfirm,
+      errorMessage: this.state.error,
       title: "Add new Risk",
       children: [
         React.DOM.div({}, [
@@ -128,12 +130,34 @@ var RiskDialog = React.createClass({
     return modal;
   },
   open: function() {
+    this.setState({
+      risk: this.defaultEmptyRisk(),
+      error: null
+    });
     this.refs.riskDialog.open();
   },
   handleCancel: function(close) {
     close();
   },
+  validateForm: function() {
+    if (this.state.risk.name.length < 5) {
+      this.setState({ error: "The name must be at least five characters." });
+      return false;
+    }
+
+    if (this.state.risk.areas.length < 1) {
+      this.setState({ error: "If this is a risk, it involves at least one area." });
+      return false;
+    }
+
+    this.setState({ error: null });
+    return true;
+  },
   handleConfirm: function(close) {
+    var valid = this.validateForm();
+    if (valid !== true) {
+      return false;
+    }
     return jQuery.post(
       getHtmlParam("risks-endpoint"),
       this.state.risk,

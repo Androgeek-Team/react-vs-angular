@@ -16,7 +16,7 @@ grunt.initConfig({
   watch: {
     react: {
       files: ['js-src/**/*.js'],
-      tasks: ['uglify'],
+      tasks: ['jshint', 'uglify'],
       options: {
         spawn: false,
       }
