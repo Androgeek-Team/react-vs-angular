@@ -9,8 +9,14 @@ var RiskPage = React.createClass({
       riskCount: count
     });
   },
+  openDialogOnEdit: function(risk) {
+    console.log('wtf');
+    this.refs.riskDialog.open(risk);
+  },
   componentDidMount: function() {
+    var self = this;
     EventSystem.subscribe('risk.count.update', this.updateRiskCount);
+    EventSystem.subscribe('open-risk-dialog', this.openDialogOnEdit);
   },
   getInitialState: function() {
     return {

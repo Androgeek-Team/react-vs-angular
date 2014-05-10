@@ -10,6 +10,7 @@
 var RiskDialog = React.createClass({
   defaultEmptyRisk: function() {
     if (typeof this.props.risk !== "undefined") {
+      this.props.risk.status = this.props.risk.status.id;
       return this.props.risk;
     }
     return {
@@ -129,7 +130,8 @@ var RiskDialog = React.createClass({
     });
     return modal;
   },
-  open: function() {
+  open: function(risk) {
+    this.props.risk = risk;
     this.setState({
       risk: this.defaultEmptyRisk(),
       error: null
@@ -162,6 +164,8 @@ var RiskDialog = React.createClass({
       getHtmlParam("risks-endpoint"),
       this.state.risk,
       function(resp) {
+        console.log('send');
+        EventSystem.publish('risk-data-sent');
         return close();
       },
       "json"

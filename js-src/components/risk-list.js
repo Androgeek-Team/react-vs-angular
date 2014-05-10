@@ -4,33 +4,39 @@
 /* global EventSystem */
 /* global getHtmlParam */
 /* global setTimeout */
+/* global clearTimeout  */
 
 var RiskList = React.createClass({
   getInitialState: function() {
-    return { risks: [] };
+    return { risks: [], setTimeoutId: null };
   },
   loadRiskList: function() {
+    if (this.state.setTimeoutId !== null) {
+      console.log('Clear', this.state.setTimeoutId);
+      clearTimeout(this.state.setTimeoutId);
+    }
     var that = this;
     jQuery.get(
       getHtmlParam("risks-endpoint"),
       function(data) {
         that.setState({
-          risks: data
+          risks: data,
+          setTimeoutId: setTimeout(that.loadRiskList, 5000)
         });
-        setTimeout(that.loadRiskList, 1000);
+        EventSystem.publish('risk.count.update', data.length);
       },
       'json'
     );
   },
   componentDidMount: function() {
     this.loadRiskList();
+    EventSystem.subscribe('risk-data-sent', this.loadRiskList);
   },
   render: function() {
     var rows = this.state.risks
       .map(function(risk) {
         return RiskLine({risk: risk});
       });
-    EventSystem.publish('risk.count.update', this.state.risks.length);
     return React.DOM.table({
       className: "table table-hover table-bordered risk-table",
     }, [

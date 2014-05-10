@@ -40,6 +40,15 @@ var getNextRiskId = function() {
   return ++__lastRiskId;
 };
 
+var findRiskIndexById = function(id) {
+  for(var i = 0, _l = risks.length; i < _l; i++) {
+    if (risks[i].id === id) {
+      return i;
+    }
+  }
+  return false;
+};
+
 app.use('/', express.static(__dirname));
 app.use(bodyParser());
 
@@ -57,8 +66,17 @@ app.post('/risks.json', function(req, res) {
     name: StatusList[req.body.status]
   };
   req.body.areas = req.body.areas.map(function(item) { return parseInt(item, 10); });
-  req.body.id = getNextRiskId();
-  risks.push(req.body);
+
+  console.log(req.body.id);
+  if (typeof req.body.id !== "undefined") {
+    req.body.id = parseInt(req.body.id, 10);
+    var riskIndex = findRiskIndexById(req.body.id);
+    risks[riskIndex] = req.body;
+  } else {
+    req.body.id = getNextRiskId();
+    risks.push(req.body);
+  }
+
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({ success: true }));
 });

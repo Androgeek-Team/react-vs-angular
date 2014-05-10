@@ -19,6 +19,9 @@ var RiskLine = React.createClass({
       }
       return this.state.statusList[status];
   },
+  editRisk: function() {
+    return EventSystem.publish('open-risk-dialog', this.props.risk);
+  },
   render: function() {
     return React.DOM.tr(
       { className: this.getRowClass(this.props.risk.status.id) },
@@ -101,7 +104,12 @@ var RiskLine = React.createClass({
         React.DOM.td({}, this.props.risk.plan),
 
         React.DOM.td({}, RiskStatus({status: this.props.risk.status})),
-        React.DOM.td({}, "[action]")
+        React.DOM.td({},
+          React.DOM.button(
+            { className: "btn btn-default", onClick: this.editRisk },
+            React.DOM.span({className: "glyphicon glyphicon-pencil"})
+          )
+        )
       ]
     );
   }
