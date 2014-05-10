@@ -23,7 +23,7 @@ grunt.initConfig({
     }
   },
   jshint: {
-    lint: ['server.js', 'Gruntfile.js', 'js-src/**/*.js'],
+    lint: ['server.js', 'mongo-store.js', 'Gruntfile.js', 'js-src/**/*.js'],
     options: {
       jshintrc: '.jshintrc'
     }

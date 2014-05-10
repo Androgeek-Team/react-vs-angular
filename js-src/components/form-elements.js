@@ -85,8 +85,9 @@ var Textarea = React.createClass({
           id: this.state.randomId,
           rows: this.props.rows,
           name: this.props.name,
-          onChange: this.onChange
-        }, this.props.value)
+          onChange: this.onChange,
+          value: this.props.value
+        })
       ]
     });
   }
@@ -141,11 +142,11 @@ var SelectDropdown = React.createClass({
 
     var options = this.props.options.map(function(option) {
       var parameters = {};
-      if (that.props.value == option.value) {
+      if (that.props.value == option._id) {
         parameters.selected = "selected";
       }
-      parameters.value = option.value;
-      return React.DOM.option(parameters, option.text);
+      parameters.value = option._id;
+      return React.DOM.option(parameters, option.name);
     });
 
     return React.DOM.div(
@@ -193,9 +194,7 @@ var CheckboxGroup = React.createClass({
     var that = this;
 
     var checkboxList = this.props.options.map(function(option) {
-      if (that.props.value.indexOf(option.value) > -1) {
-        option.checked = true;
-      }
+      option.checked = (that.props.value.indexOf(option._id) > -1);
       option.onChange = that.onChange;
       return Checkbox(option);
     });
@@ -220,10 +219,10 @@ var Checkbox = React.createClass({
         React.DOM.input({
           type: "checkbox",
           checked: this.props.checked,
-          value: this.props.value,
+          value: this.props._id,
           onChange: this.props.onChange
         }),
-        " " + this.props.text
+        " " + this.props.name
       ]
     });
   }

@@ -10,7 +10,6 @@
 var RiskDialog = React.createClass({
   defaultEmptyRisk: function() {
     if (typeof this.props.risk !== "undefined") {
-      this.props.risk.status = this.props.risk.status.id;
       return this.props.risk;
     }
     return {
@@ -20,12 +19,41 @@ var RiskDialog = React.createClass({
       impact: 1,
       areas: [],
       plan: "",
-      status: 0
+      status: 1
     };
+  },
+  componentDidMount: function() {
+    var self = this;
+    jQuery.get(
+      getHtmlParam("status-list"),
+      function(resp) { self.setState({ statusList: resp }); },
+      "json"
+    );
+    jQuery.get(
+      getHtmlParam("area-list"),
+      function(resp) { self.setState({ areaList: resp }); },
+      "json"
+    );
+    jQuery.get(
+      getHtmlParam("impact-list"),
+      function(resp) { self.setState({ impactList: resp }); },
+      "json"
+    );
+    jQuery.get(
+      getHtmlParam("probability-list"),
+      function(resp) { self.setState({ probabilityList: resp }); },
+      "json"
+    );
+
+    return true;
   },
   getInitialState: function() {
     return {
       risk: this.defaultEmptyRisk(),
+      statusList: [],
+      areaList: [],
+      impactList: [],
+      probabilityList: [],
       error: null
     };
   },
@@ -58,17 +86,7 @@ var RiskDialog = React.createClass({
               extraClass: "col-md-6",
               onChange: this.changeFormField,
               value: this.state.risk.probability,
-              options: [
-                { value: 1, text: "1 (Low)      Almost impossible" },
-                { value: 2, text: "2 (Low)      There is a minimal chance" },
-                { value: 3, text: "3 (Low)      This can even be done" },
-                { value: 4, text: "4 (Medium)   Have a chance" },
-                { value: 5, text: "5 (Medium)   We have to deal with this soon" },
-                { value: 6, text: "6 (Medium)   This week let's talk about it" },
-                { value: 7, text: "7 (High)     We need to talk about it in a few days" },
-                { value: 8, text: "8 (High)     We need to talk about it today" },
-                { value: 9, text: "9 (High)     We need to talk about it now!" }
-              ]
+              options: this.state.probabilityList
             }),
             SelectDropdown({
               label: "Impact on project if risk source happens",
@@ -76,17 +94,7 @@ var RiskDialog = React.createClass({
               extraClass: "col-md-6",
               onChange: this.changeFormField,
               value: this.state.risk.impact,
-              options: [
-                { value: 1, text: "1 (Low)      " },
-                { value: 2, text: "2 (Low)      " },
-                { value: 3, text: "3 (Low)      " },
-                { value: 4, text: "4 (Medium)   " },
-                { value: 5, text: "5 (Medium)   " },
-                { value: 6, text: "6 (Medium)   " },
-                { value: 7, text: "7 (High)     " },
-                { value: 8, text: "8 (High)     " },
-                { value: 9, text: "9 (High)     " }
-              ]
+              options: this.state.impactList
             })
           ]),
           React.DOM.div({ className: "row" }, [
@@ -96,11 +104,7 @@ var RiskDialog = React.createClass({
               extraClass: "col-md-6",
               onChange: this.changeFormField,
               value: this.state.risk.areas,
-              options: [
-                { value: 0, text: "Cost" },
-                { value: 1, text: "Schedule" },
-                { value: 2, text: "Performance" }
-              ]
+              options: this.state.areaList
             }),
             SelectDropdown({
               label: "Status",
@@ -108,11 +112,7 @@ var RiskDialog = React.createClass({
               extraClass: "col-md-6",
               onChange: this.changeFormField,
               value: this.state.risk.status,
-              options: [
-                { value: 0, text: "New" },
-                { value: 1, text: "Pending" },
-                { value: 2, text: "Closed" }
-              ]
+              options: this.state.statusList
             })
           ]),
           React.DOM.div({ className: "row" }, [
@@ -164,7 +164,6 @@ var RiskDialog = React.createClass({
       getHtmlParam("risks-endpoint"),
       this.state.risk,
       function(resp) {
-        console.log('send');
         EventSystem.publish('risk-data-sent');
         return close();
       },

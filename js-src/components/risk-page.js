@@ -10,7 +10,6 @@ var RiskPage = React.createClass({
     });
   },
   openDialogOnEdit: function(risk) {
-    console.log('wtf');
     this.refs.riskDialog.open(risk);
   },
   componentDidMount: function() {

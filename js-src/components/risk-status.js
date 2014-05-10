@@ -3,22 +3,35 @@
 var RiskStatus = React.createClass({
   getInitialState: function() {
     return {
-      statusList: [
-        'label-danger',  // New     - 0
-        'label-warning', // Pending - 1
-        'label-success'  // Closed  - 2
-      ]
+      statusList: [],
     };
   },
-  getLabelClass: function(status) {
-      if (this.state.statusList.length < (1 + status)) {
-        status = 0;
-      }
-      return this.state.statusList[status];
+  componentWillMount: function() {
+    var self = this;
+    jQuery.get(
+      getHtmlParam("status-list"),
+      function(resp) {
+        var list = [];
+        for(var i = 0, _l = resp.length; i < _l; i++) {
+          list[resp[i]._id] = resp[i];
+        }
+        self.setState({ statusList: list });
+      },
+      "json"
+    );
+
+    return true;
+  },
+  getStatusProperty: function(property) {
+    if (typeof this.state.statusList[this.props.status] !== "undefined") {
+      return this.state.statusList[this.props.status][property];
+    } else {
+      return "";
+    }
   },
   render: function() {
     return React.DOM.span({
-      className: "label " + this.getLabelClass(this.props.status.id)
-    }, this.props.status.name);
+      className: "label " + this.getStatusProperty('className')
+    }, this.getStatusProperty('name'));
   }
 });

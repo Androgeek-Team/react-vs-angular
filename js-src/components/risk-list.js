@@ -12,7 +12,6 @@ var RiskList = React.createClass({
   },
   loadRiskList: function() {
     if (this.state.setTimeoutId !== null) {
-      console.log('Clear', this.state.setTimeoutId);
       clearTimeout(this.state.setTimeoutId);
     }
     var that = this;
@@ -38,7 +37,7 @@ var RiskList = React.createClass({
         return RiskLine({risk: risk});
       });
     return React.DOM.table({
-      className: "table table-hover table-bordered risk-table",
+      className: "table table-hover table-striped table-bordered risk-table",
     }, [
       React.DOM.thead({}, [
         React.DOM.tr({}, [
@@ -56,12 +55,12 @@ var RiskList = React.createClass({
 
           // Probability
           React.DOM.td({className: "list-section-left"}, "Low"),
-          React.DOM.td({className: "list-section-center"}, "Medium"),
+          React.DOM.td({className: "list-section-center"}, "Med"),
           React.DOM.td({className: "list-section-right"}, "High"),
 
           // Impact
           React.DOM.td({className: "list-section-left"}, "Low"),
-          React.DOM.td({className: "list-section-center"}, "Medium"),
+          React.DOM.td({className: "list-section-center"}, "Med"),
           React.DOM.td({className: "list-section-right"}, "High"),
 
           React.DOM.td({}, "Result"),
