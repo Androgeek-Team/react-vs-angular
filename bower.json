@@ -7,7 +7,7 @@
   "description": "Risk Register",
   "main": "index.html",
   "license": "MIT",
-  "homepage": "http://code.androgeek.hu/",
+  "homepage": "https://react-vs-angular.herokuapp.com",
   "ignore": [
     "**/.*",
     "node_modules",

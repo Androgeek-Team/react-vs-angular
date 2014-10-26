@@ -62,6 +62,10 @@ var Dialog = React.createClass({
                 }
               }
             ),
+            React.DOM.div(
+              { className: "pull-right alert alert-danger" + (this.props.errorMessage === null ? " hidden" : "") },
+              this.props.errorMessage
+            ),
             React.DOM.h1({}, this.props.title)
           ]),
           React.DOM.div({ className: "modal-body" }, this.props.children),

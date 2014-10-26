@@ -16,8 +16,8 @@ var EventSystem = (function() {
         return false;
       }
 
-      while(queue.length > 0) {
-        (queue.shift())(data);
+      for(var i = 0, _l = queue.length; i < _l; i++) {
+        (queue[i])(data);
       }
 
       return true;

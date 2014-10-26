@@ -16,15 +16,24 @@ grunt.initConfig({
   watch: {
     react: {
       files: ['js-src/**/*.js'],
-      tasks: ['uglify'],
+      tasks: ['jshint', 'uglify'],
       options: {
         spawn: false,
       }
+    }
+  },
+  jshint: {
+    lint: ['server.js', 'mongo-store.js', 'Gruntfile.js', 'js-src/**/*.js'],
+    options: {
+      jshintrc: '.jshintrc'
     }
   }
 });
 
 grunt.loadNpmTasks('grunt-contrib-uglify');
 grunt.loadNpmTasks('grunt-contrib-watch');
+grunt.loadNpmTasks('grunt-contrib-jshint');
 
-grunt.registerTask('default', ['uglify']);
+grunt.registerTask('default', ['jshint', 'uglify']);
+grunt.registerTask('heroku', ['jshint', 'uglify']);
+grunt.registerTask('travis', ['jshint']);
